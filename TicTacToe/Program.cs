@@ -35,11 +35,13 @@ namespace TicTacToe
                     playerTracker = 1;
                 }
 
-                
+                // Draws the grid.
                 game.DrawBoard();
+
                 // Gets the choice and updates the grid.
                 string playerChoice = game.PlayerInput(playerTracker);
                 game.UpdateGrid(playerChoice, playerTracker);
+
                 // Adds to the turn counter.
                 turnCounter++;
 
@@ -55,11 +57,16 @@ namespace TicTacToe
                     {
                         victor = "Player 2";
                     }
+                    // Shows the winnig board.
                     Console.Clear();
                     game.DrawBoard();
+
+                    // Congratulates player on the win.
                     Console.WriteLine(" ");
                     Console.WriteLine("Congratualtion {0}! You have won", victor);
                     Console.WriteLine(" ");
+
+                    // Asks if they want to reset or quit.
                     if (game.ResetOrQuit())
                     {
                         game.Reset();
@@ -74,11 +81,14 @@ namespace TicTacToe
                 // Checks for a draw, announces the draw, and asks if you want to reset.
                 if (game.CheckForDraw())
                 {
+                    // Shows the drawing board.
                     Console.Clear();
                     game.DrawBoard();
                     Console.WriteLine(" ");
                     Console.WriteLine("Looks like you drew!");
                     Console.WriteLine(" ");
+
+                    // Asks if they want to reset or quit.
                     if (game.ResetOrQuit())
                     {
                         game.Reset();

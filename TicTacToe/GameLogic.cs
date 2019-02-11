@@ -184,7 +184,7 @@ namespace TicTacToe
         public bool ResetOrQuit()
         {
             Console.WriteLine("Would you like to play again?");
-            Console.WriteLine("(Y for Yes or N to quit)");
+            Console.WriteLine("(Any key for Yes or N to quit)");
             string answer = Console.ReadLine();
             answer = answer.ToLower();
             if (answer.Equals("n"))
