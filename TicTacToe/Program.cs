@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace TicTacToe
 {
@@ -13,50 +8,36 @@ namespace TicTacToe
         static void Main(string[] args)
         {
             // Creates the game object.
-            GameLogic game = new GameLogic();
+            var game = new GameLogic();
 
             // Sets the bool for the game loop, and trackers for the turn
             // and the player.
-            bool gameRunning = true;
-            int turnCounter = 1;
-            int playerTracker = 1;
+            var gameRunning = true;
+            var turnCounter = 1;
 
+            
             // Game loop.
             while (gameRunning)
             {
                 // If turn is divisable by 2, it's player twos turn.
                 // Otherwise its players ones.
-                if (turnCounter % 2 == 0)
-                {
-                    playerTracker = 2;
-                }
-                else
-                {
-                    playerTracker = 1;
-                }
-
+                var playerTracker = (turnCounter % 2 == 0)? 2 : 1;
+                
                 // Draws the grid.
                 game.DrawBoard();
 
                 // Gets the choice and updates the grid.
-                string playerChoice = game.PlayerInput(playerTracker);
+                var playerChoice = game.PlayerInput(playerTracker);
                 game.UpdateGrid(playerChoice, playerTracker);
 
                 // Adds to the turn counter.
                 turnCounter++;
 
                 // Checks for a victory, announces the victor, and asks if you want to reset.
-                string victor = game.CheckForVictor();
+                var victor = game.CheckForVictor();
                 if (victor != "")
                 {
-                    if (victor == "X")
-                    {
-                        victor = "Player 1";
-                    }
-                    else
-                    {
-                        victor = "Player 2";
-                    }
+                    victor = victor == "X" ? "Player 1" : "Player 2";
                     // Shows the winnig board.
                     Console.Clear();
                     game.DrawBoard();
@@ -102,7 +83,6 @@ namespace TicTacToe
                 // Clear the screen each loop.
                 Console.Clear();
             }
-
         }
     }
 

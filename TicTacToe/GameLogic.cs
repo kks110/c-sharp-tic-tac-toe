@@ -6,7 +6,7 @@ namespace TicTacToe
     class GameLogic
     {
         // Sets up the game board.
-        public string[,] gameBoard = new string[,]
+        private string[,] _gameBoard =
         {
             { "1", "2", "3" },
             { "4", "5", "6" },
@@ -17,13 +17,13 @@ namespace TicTacToe
         public void DrawBoard()
         {
             Console.WriteLine("     |     |     ");
-            Console.WriteLine("  {0}  |  {1}  |  {2}  ", gameBoard[0, 0], gameBoard[0, 1], gameBoard[0, 2]);
+            Console.WriteLine("  {0}  |  {1}  |  {2}  ", _gameBoard[0, 0], _gameBoard[0, 1], _gameBoard[0, 2]);
             Console.WriteLine("_____|_____|_____");
             Console.WriteLine("     |     |     ");
-            Console.WriteLine("  {0}  |  {1}  |  {2}  ", gameBoard[1, 0], gameBoard[1, 1], gameBoard[1, 2]);
+            Console.WriteLine("  {0}  |  {1}  |  {2}  ", _gameBoard[1, 0], _gameBoard[1, 1], _gameBoard[1, 2]);
             Console.WriteLine("_____|_____|_____");
             Console.WriteLine("     |     |     ");
-            Console.WriteLine("  {0}  |  {1}  |  {2}  ", gameBoard[2, 0], gameBoard[2, 1], gameBoard[2, 2]);
+            Console.WriteLine("  {0}  |  {1}  |  {2}  ", _gameBoard[2, 0], _gameBoard[2, 1], _gameBoard[2, 2]);
             Console.WriteLine("     |     |     ");
             Console.WriteLine("                 ");
         }
@@ -31,27 +31,15 @@ namespace TicTacToe
         // Gets the player unput.
         public string PlayerInput(int playerNumber)
         {
-            int choiceInt = 0;
-            string choice = "";
-            bool validEntry = false;
-
-
-            while (!validEntry)
+            while (true)
             {
                 // Dependant on player, picks what to call them.
-                if (playerNumber == 1)
-                {
-                    Console.WriteLine("Player 1, please pick a square:");
-                }
-                else
-                {
-                    Console.WriteLine("Player 2, please pick a square:");
-                }
+                Console.WriteLine($"Player {playerNumber.ToString()}, please pick a square:");
                 // Gets the player choice.
-                choice = Console.ReadLine();
+                var choice = Console.ReadLine();
 
                 // Checks if it's a number.
-                if (int.TryParse(choice, out choiceInt))
+                if (int.TryParse(choice, out var choiceInt))
                 {
                     // If it is, turn to a number and check is's between 1 and 9.
                     choiceInt = int.Parse(choice);
@@ -59,12 +47,9 @@ namespace TicTacToe
                     {
                         if (SquareIsFree(choice))
                         {
-                            validEntry = true;
+                            return choice;
                         }
-                        else
-                        {
-                            Console.WriteLine("That square is already taken, please choose another");
-                        }
+                        Console.WriteLine("That square is already taken, please choose another");
                     }
                     else
                     {
@@ -76,14 +61,12 @@ namespace TicTacToe
                     Console.WriteLine("That was not a number, please enter a number");
                 }
             }
-
-            return choice;
         }
 
         // Checks if the square that was picked is free.
         private bool SquareIsFree(string choice)
         {
-            foreach (string square in gameBoard)
+            foreach (var square in _gameBoard)
             {
                 if (square.Equals(choice))
                 {
@@ -98,26 +81,17 @@ namespace TicTacToe
         // Updates the grid with the players choice.
         public void UpdateGrid(string choice, int playerTracker)
         {
-            int boardHeight = 3;
-            int boardWidth = 3;
-            string icon = "";
+            const int boardHeight = 3;
+            const int boardWidth = 3;
+            var icon = playerTracker == 1 ? "X" : "O";
 
-            if (playerTracker == 1)
+            for (var w = 0; w < boardWidth; w++)
             {
-                icon = "X";
-            }
-            else
-            {
-                icon = "O";
-            }
-
-            for (int w = 0; w < boardWidth; w++)
-            {
-                for (int h = 0; h < boardHeight; h++)
+                for (var h = 0; h < boardHeight; h++)
                 {
-                    if (gameBoard[w, h].Equals(choice))
+                    if (_gameBoard[w, h].Equals(choice))
                     {
-                        gameBoard[w, h] = icon;
+                        _gameBoard[w, h] = icon;
                     }
                 }
             }
@@ -126,49 +100,46 @@ namespace TicTacToe
         // Checks all the vistory conditions, if one is met, it will return the winning symbol.
         public string CheckForVictor()
         {
-            if (gameBoard[0,0].Equals(gameBoard[0,1]) && gameBoard[0, 1].Equals(gameBoard[0, 2]))
+            if (_gameBoard[0,0].Equals(_gameBoard[0,1]) && _gameBoard[0, 1].Equals(_gameBoard[0, 2]))
             {
-                return gameBoard[0, 0];
+                return _gameBoard[0, 0];
             }
-            else if (gameBoard[1, 0].Equals(gameBoard[1, 1]) && gameBoard[1, 1].Equals(gameBoard[1, 2]))
+            if (_gameBoard[1, 0].Equals(_gameBoard[1, 1]) && _gameBoard[1, 1].Equals(_gameBoard[1, 2]))
             {
-                return gameBoard[1, 0];
+                return _gameBoard[1, 0];
             }
-            else if (gameBoard[2, 0].Equals(gameBoard[2, 1]) && gameBoard[2, 1].Equals(gameBoard[2, 2]))
+            if (_gameBoard[2, 0].Equals(_gameBoard[2, 1]) && _gameBoard[2, 1].Equals(_gameBoard[2, 2]))
             {
-                return gameBoard[2, 0];
+                return _gameBoard[2, 0];
             }
-            else if (gameBoard[0, 0].Equals(gameBoard[1, 0]) && gameBoard[1, 0].Equals(gameBoard[2, 0]))
+            if (_gameBoard[0, 0].Equals(_gameBoard[1, 0]) && _gameBoard[1, 0].Equals(_gameBoard[2, 0]))
             {
-                return gameBoard[0, 0];
+                return _gameBoard[0, 0];
             }
-            else if (gameBoard[0, 1].Equals(gameBoard[1, 1]) && gameBoard[1, 1].Equals(gameBoard[2, 1]))
+            if (_gameBoard[0, 1].Equals(_gameBoard[1, 1]) && _gameBoard[1, 1].Equals(_gameBoard[2, 1]))
             {
-                return gameBoard[0, 1];
+                return _gameBoard[0, 1];
             }
-            else if (gameBoard[0, 2].Equals(gameBoard[1, 2]) && gameBoard[1, 2].Equals(gameBoard[2, 2]))
+            if (_gameBoard[0, 2].Equals(_gameBoard[1, 2]) && _gameBoard[1, 2].Equals(_gameBoard[2, 2]))
             {
-                return gameBoard[0, 2];
+                return _gameBoard[0, 2];
             }
-            else if (gameBoard[0, 0].Equals(gameBoard[1, 1]) && gameBoard[1, 1].Equals(gameBoard[2, 2]))
+            if (_gameBoard[0, 0].Equals(_gameBoard[1, 1]) && _gameBoard[1, 1].Equals(_gameBoard[2, 2]))
             {
-                return gameBoard[0, 0];
+                return _gameBoard[0, 0];
             }
-            else if (gameBoard[0, 2].Equals(gameBoard[1, 1]) && gameBoard[1, 1].Equals(gameBoard[2, 0]))
+            if (_gameBoard[0, 2].Equals(_gameBoard[1, 1]) && _gameBoard[1, 1].Equals(_gameBoard[2, 0]))
             {
-                return gameBoard[0, 2];
+                return _gameBoard[0, 2];
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
 
         // Loop to check if there is a draw.
         // Makes sure there is always a number avalible to pick.
         public bool CheckForDraw()
         {
-            foreach (string square in gameBoard)
+            foreach (var square in _gameBoard)
             {
                 if (square != "X" && square != "O")
                 {
@@ -185,23 +156,14 @@ namespace TicTacToe
         {
             Console.WriteLine("Would you like to play again?");
             Console.WriteLine("(Any key for Yes or N to quit)");
-            string answer = Console.ReadLine();
-            answer = answer.ToLower();
-            if (answer.Equals("n"))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-
+            var answer = Console.ReadLine().ToLower();
+            return !answer.Equals("n");
         }
 
         // Resets the gameboard to starting state.
         public void Reset()
         {
-            gameBoard = new string[,]
+            _gameBoard = new [,]
             {
                 { "1", "2", "3" },
                 { "4", "5", "6" },
